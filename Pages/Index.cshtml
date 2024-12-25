@@ -1,10 +1,34 @@
 ﻿@page
-@model IndexModel
+@model IEnumerable<Partner>
+
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Partners";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h1>Partners</h1>
+<a href="@Url.Action("Create", "Partner")" class="btn btn-primary">Add Partner</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Full Name</th>
+            <th>Partner Number</th>
+            <th>Partner Type</th>
+            <th>Created At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var partner in Model)
+        {
+            <tr>
+                <td>@partner.FirstName @partner.LastName</td>
+                <td>@partner.PartnerNumber</td>
+                <td>@(partner.PartnerTypeId == 1 ? "Personal" : "Legal")</td>
+                <td>@partner.CreatedAtUtc.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                <td>
+                    <a href="@Url.Action("Details", "Partner", new { id = partner.PartnerId })" class="btn btn-info">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
