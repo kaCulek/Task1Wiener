@@ -18,7 +18,7 @@ namespace Task1Wiener
             return await connection.QueryAsync<Partner>("SELECT * FROM Partners ORDER BY CreatedAtUtc DESC");
         }
 
-        public async Task<Partner> GetPartnerByIdAsync(int partnerId)
+        public async Task<Partner?> GetPartnerByIdAsync(int partnerId)
         {
             using var connection = new SqlConnection(_connectionString);
             return await connection.QuerySingleOrDefaultAsync<Partner>("SELECT * FROM Partners WHERE PartnerId = @PartnerId", new { PartnerId = partnerId });

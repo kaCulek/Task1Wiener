@@ -53,7 +53,11 @@ namespace Task1Wiener
 
         public IActionResult AddPolicy(int partnerId)
         {
-            var model = new AddPolicyViewModel { PartnerId = partnerId };
+            var model = new AddPolicyViewModel
+            {
+                PartnerId = partnerId,
+                PolicyNumber = string.Empty // Initialize required member
+            };
             return View(model);
         }
 
@@ -67,7 +71,8 @@ namespace Task1Wiener
                 {
                     PartnerId = model.PartnerId,
                     PolicyNumber = model.PolicyNumber,
-                    PolicyAmount = model.PolicyAmount
+                    PolicyAmount = model.PolicyAmount,
+                    CreatedAtUtc = DateTime.UtcNow
                 };
                 await _repository.AddPolicyAsync(policy);
                 return RedirectToAction(nameof(Details), new { id = model.PartnerId });
@@ -79,13 +84,13 @@ namespace Task1Wiener
     public class AddPolicyViewModel
     {
         public int PartnerId { get; set; }
-        public string PolicyNumber { get; set; }
+        public required string PolicyNumber { get; set; }
         public decimal PolicyAmount { get; set; }
     }
 
     public class PartnerDetailsViewModel
     {
-        public Partner Partner { get; set; }
-        public IEnumerable<Policy> Policies { get; set; }
+        public required Partner Partner { get; set; }
+        public required IEnumerable<Policy> Policies { get; set; }
     }
 }
