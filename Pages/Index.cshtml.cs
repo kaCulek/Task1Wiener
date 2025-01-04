@@ -3,18 +3,15 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Task1Wiener.Pages
 {
-    public class IndexModel : PageModel
+    public class IndexModel(PartnerRepository partnerRepository) : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
+        private readonly PartnerRepository _partnerRepository = partnerRepository ?? throw new ArgumentNullException(nameof(partnerRepository));
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public IEnumerable<Partner> Partners { get; private set; } = Enumerable.Empty<Partner>();
+
+        public async Task OnGetAsync()
         {
-            _logger = logger;
-        }
-
-        public void OnGet()
-        {
-
+            Partners = await _partnerRepository.GetAllPartnersAsync();
         }
     }
 }

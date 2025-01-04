@@ -6,9 +6,9 @@ namespace Task1Wiener
     {
         private readonly PartnerRepository _repository;
 
-        public PartnerController(PartnerRepository repository)
+        public PartnerController()
         {
-            _repository = repository;
+            _repository = new PartnerRepository();
         }
 
         public async Task<IActionResult> Index()

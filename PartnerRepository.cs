@@ -12,6 +12,11 @@ namespace Task1Wiener
             _connectionString = connectionString;
         }
 
+        public PartnerRepository()
+        {
+            _connectionString = "Server=.;Database=Task1Wiener;Trusted_Connection=True;";   
+        }
+
         public async Task<IEnumerable<Partner>> GetAllPartnersAsync()
         {
             using var connection = new SqlConnection(_connectionString);
@@ -28,8 +33,8 @@ namespace Task1Wiener
         {
             using var connection = new SqlConnection(_connectionString);
             var sql = @"INSERT INTO Partners (FirstName, LastName, Address, PartnerNumber, CroatianPIN, PartnerTypeId, CreatedAtUtc, CreatedByUser, IsForeign, ExternalCode, Gender)
-                    VALUES (@FirstName, @LastName, @Address, @PartnerNumber, @CroatianPIN, @PartnerTypeId, @CreatedAtUtc, @CreatedByUser, @IsForeign, @ExternalCode, @Gender);
-                    SELECT CAST(SCOPE_IDENTITY() as int)";
+                        VALUES (@FirstName, @LastName, @Address, @PartnerNumber, @CroatianPIN, @PartnerTypeId, @CreatedAtUtc, @CreatedByUser, @IsForeign, @ExternalCode, @Gender);
+                        SELECT CAST(SCOPE_IDENTITY() as int)";
             return await connection.ExecuteScalarAsync<int>(sql, partner);
         }
 
@@ -43,9 +48,10 @@ namespace Task1Wiener
         {
             using var connection = new SqlConnection(_connectionString);
             var sql = @"INSERT INTO Policies (PartnerId, PolicyNumber, PolicyAmount)
-                    VALUES (@PartnerId, @PolicyNumber, @PolicyAmount);
-                    SELECT CAST(SCOPE_IDENTITY() as int)";
+                        VALUES (@PartnerId, @PolicyNumber, @PolicyAmount);
+                        SELECT CAST(SCOPE_IDENTITY() as int)";
             return await connection.ExecuteScalarAsync<int>(sql, policy);
         }
     }
 }
+
