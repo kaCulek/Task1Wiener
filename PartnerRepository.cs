@@ -1,11 +1,14 @@
 ﻿using Microsoft.Data.SqlClient;
 using Dapper;
+using MySqlConnector;
   
 namespace Task1Wiener
 {
     public class PartnerRepository
     {
         private readonly string _connectionString;
+
+
 
      
         public PartnerRepository()
@@ -15,7 +18,7 @@ namespace Task1Wiener
 
         public async Task<IEnumerable<Partner>> GetAllPartnersAsync()
         {
-            using var connection = new SqlConnection(_connectionString);
+            using var connection = new MySqlConnection(_connectionString);
             connection.Open();
             var result1 = await connection.QueryAsync<Partner>("SELECT * FROM dbo.Partners ORDER BY CreatedAtUtc DESC");
             return result1.ToList();
@@ -23,7 +26,7 @@ namespace Task1Wiener
 
         public async Task<Partner?> GetPartnerByIdAsync(int partnerId)
         {
-            using var connection = new SqlConnection(_connectionString);
+            using var connection = new MySqlConnection(_connectionString);
             connection.Open();
             var result2 = await connection.QuerySingleOrDefaultAsync<Partner>("SELECT * FROM dbo.Partners WHERE PartnerId = @PartnerId", new { PartnerId = partnerId });
             return result2;
@@ -31,7 +34,7 @@ namespace Task1Wiener
 
         public async Task<int> AddPartnerAsync(Partner partner)
         {
-            using var connection = new SqlConnection(_connectionString);
+            using var connection = new MySqlConnection(_connectionString);
             connection.Open();
             var sql = @"INSERT INTO dbo.[Partners] (FirstName, LastName, Address, PartnerNumber, CroatianPIN, PartnerTypeId, CreatedAtUtc, CreatedByUser, IsForeign, ExternalCode, Gender)
                         VALUES (@FirstName, @LastName, @Address, @PartnerNumber, @CroatianPIN, @PartnerTypeId, @CreatedAtUtc, @CreatedByUser, @IsForeign, @ExternalCode, @Gender);
@@ -42,7 +45,7 @@ namespace Task1Wiener
 
         public async Task<IEnumerable<Policy>> GetPoliciesByPartnerIdAsync(int partnerId)
         {
-            using var connection = new SqlConnection(_connectionString);
+            using var connection = new MySqlConnection(_connectionString);
             connection.Open();
             var result4 = await connection.QueryAsync<Policy>("SELECT * FROM dbo.Policies WHERE PartnerId = @PartnerId", new { PartnerId = partnerId });
             return result4.ToList();
@@ -50,7 +53,7 @@ namespace Task1Wiener
 
         public async Task<int> AddPolicyAsync(Policy policy)
         {
-            using var connection = new SqlConnection(_connectionString);
+            using var connection = new MySqlConnection(_connectionString);
             connection.Open();
             var sql = @"INSERT INTO dbo.Policies (PartnerId, PolicyNumber, PolicyAmount)
                         VALUES (@PartnerId, @PolicyNumber, @PolicyAmount);
