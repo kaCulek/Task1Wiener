@@ -10,7 +10,7 @@ namespace Task1Wiener
      
         public PartnerRepository()
         {
-            _connectionString = "Server=localhost;Database=master;Trusted_Connection=True;";
+            _connectionString = "Data Source=KARLO; Initial Catalog=master; Integrated Security=SSPI; Trust Certificate=True;";  
         }
 
         public async Task<IEnumerable<Partner>> GetAllPartnersAsync()
